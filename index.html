@@ -4,428 +4,462 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KantinGo - Katalog & Pesanan</title>
-<link rel="icon" href="IconK.png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-:root {
-    --g: #21a72a;
-    --ga: rgba(33, 167, 42, .9);
-    --gs: rgba(33, 167, 42, .08);
-    --gm: rgba(33, 167, 42, .18);
-    --bg: #f8faf8;
-    --sh: 0 10px 30px rgba(0,0,0,0.05);
-}
+:root{--g:#21a72a;--ga:rgba(33,167,42,.9);--gs:rgba(33,167,42,.08);--gm:rgba(33,167,42,.18);--bg:#f0f7f1;--sh:0 4px 20px rgba(33,167,42,.08)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Nunito',sans-serif;overflow-x:hidden}
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); font-family: 'Nunito', sans-serif; color: #333; overflow-x: hidden; }
+/* Bagian PArticle */
+#particles-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:var(--gm);animation:floatP linear infinite;opacity:0}
+@keyframes floatP{0%{transform:translateY(110vh) scale(0);opacity:0}10%{opacity:.4}90%{opacity:.2}100%{transform:translateY(-10vh) scale(1.2);opacity:0}}
 
-/* Particles */
-#particles-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.particle { position: absolute; border-radius: 50%; background: var(--gm); animation: floatP linear infinite; opacity: 0; }
-@keyframes floatP {
-    0% { transform: translateY(110vh) scale(0); opacity: 0; }
-    10% { opacity: .4; }
-    90% { opacity: .2; }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-}
+/* Navbar Nya ini */
+.top-navbar{background:rgba(255,255,255,.92);backdrop-filter:blur(14px);box-shadow:0 2px 20px rgba(33,167,42,.1);z-index:1030;position:sticky;top:0}
+.brand-logo{font-family:'Pacifico',cursive;color:var(--ga);font-size:1.5rem}
+.nav-lc{font-weight:700;font-size:.88rem;color:#555;padding:6px 14px;border-radius:20px;transition:all .25s;cursor:pointer}
+.nav-lc:hover{background:var(--gs);color:var(--g)}
+.nav-lc.active{background:var(--ga);color:#fff!important}
 
-/* Navbar */
-.top-navbar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); box-shadow: 0 2px 15px rgba(0,0,0,0.04); z-index: 1030; position: sticky; top: 0; }
-.brand-logo { font-family: 'Pacifico', cursive; color: var(--g); font-size: 1.6rem; }
-.nav-lc { font-weight: 700; font-size: .9rem; color: #555; padding: 8px 18px; border-radius: 25px; transition: all .3s; cursor: pointer; text-decoration: none; }
-.nav-lc:hover { background: var(--gs); color: var(--g); }
-.nav-lc.active { background: var(--g); color: #fff !important; box-shadow: 0 4px 12px rgba(33, 167, 42, 0.3); }
+/* animasi Pages */
+.page{animation:pgIn .35s cubic-bezier(.25,.46,.45,.94)}
+@keyframes pgIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
 
-/* Animation */
-.page { animation: pgIn .4s ease-out; }
-@keyframes pgIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: none; } }
+/* Hero iki */
+.hero{height:260px;background:center/cover;position:relative;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(33,167,42,.18)}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.15),rgba(33,167,42,.55));display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff;text-align:center}
+.hero-title{font-family:'Pacifico',cursive;font-size:3rem;text-shadow:0 4px 20px rgba(0,0,0,.3);animation:htIn .8s ease both}
+.hero-sub{letter-spacing:3px;font-size:12px;text-transform:uppercase;opacity:.9;margin-top:8px;animation:hsIn 1s ease .2s both}
+@keyframes htIn{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+@keyframes hsIn{from{opacity:0;transform:translateY(10px)}to{opacity:.9;transform:none}}
 
-/* Hero Section */
-.hero { 
-    min-height: 200px; 
-    height: 30vh; 
-    background: center/cover no-repeat; 
-    position: relative; 
-    border-radius: 24px; 
-    overflow: hidden; 
-    box-shadow: var(--sh); 
-}
-.hero-ov { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5)); display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; padding: 20px; }
-.hero-title { font-family: 'Pacifico', cursive; font-size: clamp(2rem, 6vw, 3.5rem); text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-.hero-sub { letter-spacing: 2px; font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.9; }
+/* Cards menu nya */
+.menu-card,.best-card{border:none;border-radius:18px;overflow:hidden;transition:transform .3s,box-shadow .3s;background:#fff;animation:crdIn .4s ease both}
+.menu-card:hover,.best-card:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 16px 40px rgba(33,167,42,.15)!important}
+@keyframes crdIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.menu-card-img{width:88px;height:88px;object-fit:cover;border-radius:14px;flex-shrink:0}
+.add-btn{width:36px;height:36px;border-radius:50%;background:var(--ga);border:none;color:#fff;display:flex;align-items:center;justify-content:center;transition:all .2s;cursor:pointer;font-size:18px;flex-shrink:0}
+.add-btn:hover{transform:scale(1.15) rotate(90deg);background:var(--g)}
+.add-btn:active{transform:scale(.9)}
 
-/* Cards */
-.sc { background: #fff; border-radius: 24px; box-shadow: var(--sh); padding: 25px; border: 1px solid rgba(0,0,0,0.02); }
-.menu-card, .best-card { border: none; border-radius: 20px; transition: all .3s; background: #fff; overflow: hidden; }
-.menu-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(33, 167, 42, 0.12) !important; }
+/* info lah ini*/
+.sc{background:#fff;border-radius:20px;box-shadow:var(--sh);padding:24px}
+.iic{border-radius:16px;padding:16px 12px;text-align:center;transition:transform .25s;animation:popIn .5s ease both}
+.iic:hover{transform:translateY(-4px)}
+@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+.i-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 10px}
 
-.menu-card-img { width: 85px; height: 85px; object-fit: cover; border-radius: 16px; }
-.add-btn { width: 38px; height: 38px; border-radius: 12px; background: var(--g); border: none; color: #fff; transition: all 0.2s; }
-.add-btn:hover { transform: scale(1.1); background: #1a8e22; }
+/* Subtab sama search */
+.sub-tab{display:inline-flex;gap:4px;background:#fff;border-radius:40px;padding:4px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.sub-tab button{border:none;background:transparent;border-radius:30px;padding:6px 16px;font-weight:700;font-size:.8rem;color:#888;transition:all .2s;font-family:inherit;cursor:pointer}
+.sub-tab button.active{background:var(--ga);color:#fff}
+.sw{position:relative}
+.sw input{border-radius:30px;border:2px solid #e8f5e9;background:#fff;padding:11px 18px 11px 44px;font-size:.875rem;width:100%;outline:none;font-family:inherit;transition:border .2s;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.sw input:focus{border-color:var(--g)}
+.sw .bi-search{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#aaa}
 
-/* Info Cards */
-.iic { border-radius: 20px; padding: 20px 15px; text-align: center; background: #fff; height: 100%; transition: 0.3s; }
-.iic:hover { transform: translateY(-5px); box-shadow: var(--sh); }
-.i-icon { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px; }
+/* Misc ini */
+.ribbon{position:absolute;top:10px;left:-6px;background:linear-gradient(135deg,#ff6b6b,#ee0979);color:#fff;font-size:.62rem;font-weight:800;padding:4px 10px;border-radius:0 4px 4px 0;letter-spacing:.5px}
+.ribbon::before{content:'';position:absolute;left:0;bottom:-6px;border:3px solid #b30000;border-right-color:transparent;border-bottom-color:transparent}
+.status-badge{font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:20px;display:inline-block;margin-top:4px}
+.skeleton{background:linear-gradient(90deg,#eaf5eb 25%,#f5fdf5 50%,#eaf5eb 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:14px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-card{height:100px}
 
-/* Subtabs & Search */
-.sub-tab { display: inline-flex; background: #eee; border-radius: 15px; padding: 4px; }
-.sub-tab button { border: none; background: transparent; border-radius: 12px; padding: 6px 16px; font-weight: 700; font-size: .85rem; color: #666; }
-.sub-tab button.active { background: #fff; color: var(--g); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.sw input { border-radius: 15px; border: 1px solid #ddd; padding: 12px 15px 12px 45px; width: 100%; transition: 0.3s; }
-.sw input:focus { border-color: var(--g); box-shadow: 0 0 0 4px var(--gs); outline: none; }
+/* FAB */
+#fab-cart{width:60px;height:60px;bottom:86px;right:18px;z-index:1050;font-size:22px;border:none;transition:transform .25s,box-shadow .25s}
+#fab-cart:active{transform:scale(.88)!important}
+#fab-cart.has-item{animation:fabP 1.8s infinite}
+@keyframes fabP{0%,100%{box-shadow:0 4px 20px rgba(33,167,42,.4)}50%{box-shadow:0 4px 40px rgba(33,167,42,.15),0 0 0 12px rgba(33,167,42,.08)}}
 
-/* Status Badge */
-.status-badge { font-size: .7rem; font-weight: 800; padding: 4px 12px; border-radius: 10px; text-transform: uppercase; margin-top: 5px; }
+/* nav bwah */
+.bot-nav{background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-top:1px solid #e8f5e9}
+.nib{cursor:pointer;color:#b0bec5;font-size:10px;font-weight:700;transition:all .2s}
+.nib.active{color:var(--ga);transform:translateY(-2px)}
+.nib i{display:block;font-size:1.45rem;margin-bottom:2px}
 
-/* FAB & Bottom Nav */
-#fab-cart { width: 60px; height: 60px; z-index: 1050; font-size: 24px; border-radius: 20px; border: none; box-shadow: 0 8px 25px rgba(33, 167, 42, 0.4); }
-.bot-nav { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-top: 1px solid #eee; padding: 10px 0; }
-.nib { color: #aaa; font-size: 11px; font-weight: 700; text-decoration: none; }
-.nib.active { color: var(--g); }
-.nib i { font-size: 1.5rem; display: block; }
+/* Team kita*/
+.team-card{border-radius:18px;overflow:hidden;transition:transform .3s;animation:crdIn .5s ease both}
+.team-card:hover{transform:translateY(-6px)}
+.team-av{width:76px;height:76px;border-radius:50%;object-fit:cover;margin:0 auto;border:3px solid var(--ga);display:block}
 
-/* Desktop Adjustment */
-@media (min-width: 768px) {
-    .hero { height: 350px; }
-    .container { max-width: 1000px; }
-}
+/* keranjang */
+.cir{transition:background .2s;border-radius:12px;padding:8px}
+.cir:hover{background:var(--gs)}
+.qty-btn{width:30px;height:30px;border-radius:50%;border:2px solid #e0e0e0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:16px;font-weight:700}
+.qty-btn:hover{border-color:var(--g);color:var(--g)}
+
+/* kalo menu kosonh*/
+.empty-menu{text-align:center;color:#aaa;padding:50px 20px}
+.empty-menu i{font-size:3.5rem;opacity:.15;display:block;margin-bottom:12px}
+
+/* tombol ratting */
+.btn-rl{display:inline-block;position:relative;text-decoration:none;border-radius:50px;overflow:hidden}
+.btn-ri{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#21a72a,#0d7a13);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;padding:14px 28px;border-radius:50px;position:relative;z-index:1;box-shadow:0 6px 24px rgba(33,167,42,.35);transition:transform .25s,box-shadow .25s}
+.btn-rl:hover .btn-ri{transform:translateY(-3px) scale(1.02);box-shadow:0 12px 36px rgba(33,167,42,.45)}
+.brs{animation:starB 1.8s ease-in-out infinite;display:inline-block}
+@keyframes starB{0%,100%{transform:scale(1) rotate(-5deg)}50%{transform:scale(1.2) rotate(5deg)}}
+.bri{font-size:1.1rem;animation:arrP 1.4s ease-in-out infinite}
+@keyframes arrP{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.brg{position:absolute;inset:0;border-radius:50px;background:linear-gradient(135deg,rgba(33,167,42,.3),rgba(13,122,19,.3));filter:blur(12px);animation:glwP 2s ease-in-out infinite;z-index:0}
+@keyframes glwP{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+
+/* delay pas buka card */
+.s1{animation-delay:.05s}.s2{animation-delay:.1s}.s3{animation-delay:.15s}
+.s4{animation-delay:.2s}.s5{animation-delay:.25s}.s6{animation-delay:.3s}
+
+@media(max-width:767px){.hero{border-radius:14px;height:200px}.hero-title{font-size:2.2rem}.container{padding-left:12px;padding-right:12px}}
 </style>
 </head>
 <body>
 
 <div id="particles-bg"></div>
 
-<!-- Desktop Navbar -->
-<nav class="top-navbar d-none d-md-block mb-4">
-    <div class="container d-flex justify-content-between align-items-center py-3">
-        <span class="brand-logo"><i class="bi bi-shop-window me-2"></i>KantinGo</span>
-        <div class="d-flex gap-3 align-items-center">
-            <a class="nav-lc active" data-target="home" onclick="go('home')">Beranda</a>
-            <a class="nav-lc" data-target="makanan" onclick="go('makanan')">Makanan</a>
-            <a class="nav-lc" data-target="minuman" onclick="go('minuman')">Minuman</a>
-            <button class="btn border-0 position-relative ms-3" data-bs-toggle="modal" data-bs-target="#cartModal">
-                <i class="bi bi-bag-heart-fill fs-4 text-success"></i>
-                <span id="c-desk" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">0</span>
-            </button>
-        </div>
-    </div>
+<!-- navbar pas di pc -->
+<nav class="top-navbar navbar navbar-expand-md py-2 d-none d-md-flex">
+  <div class="container">
+    <span class="brand-logo"><i class="bi bi-shop-window me-1"></i>KantinGo</span>
+    <ul class="navbar-nav ms-auto gap-2 align-items-center">
+      <li><a class="nav-lc active" data-target="home" onclick="go('home')">Beranda</a></li>
+      <li><a class="nav-lc" data-target="makanan" onclick="go('makanan')">Makanan</a></li>
+      <li><a class="nav-lc" data-target="minuman" onclick="go('minuman')">Minuman</a></li>
+      <li class="ms-2">
+        <button class="btn border-0 position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
+          <i class="bi bi-cart3 fs-4" style="color:var(--ga)"></i>
+          <span id="c-desk" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style="font-size:.65rem">0</span>
+        </button>
+      </li>
+    </ul>
+  </div>
 </nav>
 
-<div class="container pb-5 mb-5 mt-3">
+<div class="container pb-5 mb-5 mt-2 mt-md-3" style="position:relative;z-index:1">
 
-    <!-- HOME PAGE -->
-    <div id="p-home" class="page">
-        <div class="hero mb-4" style="background-image:url('HSekul.jpeg')">
-            <div class="hero-ov">
-                <h1 class="hero-title">KantinGo</h1>
-                <p class="hero-sub">SMKN 5 Surakarta • Lezat & Higienis</p>
-            </div>
-        </div>
-
-        <!-- Info Grid: 1 Kolom di HP, 3 Kolom di Laptop -->
-        <div class="row g-3 mb-4">
-            <div class="col-12 col-md-4">
-                <div class="iic sc">
-                    <div class="i-icon" style="background:#fff0f0"><i class="bi bi-geo-alt-fill text-danger"></i></div>
-                    <h6 class="fw-800 mb-1">Lokasi</h6>
-                    <p class="text-muted small mb-0">Gedung A, Lantai Dasar</p>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="iic sc">
-                    <div class="i-icon" style="background:#fff9e6"><i class="bi bi-clock-fill text-warning"></i></div>
-                    <h6 class="fw-800 mb-1">Jam Operasional</h6>
-                    <p class="text-muted small mb-0">07:00 – 17:00 WIB</p>
-                    <span id="k-status" class="status-badge"></span>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="iic sc">
-                    <div class="i-icon" style="background:#eef7ff"><i class="bi bi-lightning-charge-fill text-primary"></i></div>
-                    <h6 class="fw-800 mb-1">Layanan</h6>
-                    <p class="text-muted small mb-0">Pesan Cepat & Praktis</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Best Seller -->
-        <div class="sc mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-900 m-0"><i class="bi bi-fire text-danger me-2"></i>Paling Laris</h5>
-                <button class="btn btn-sm btn-success rounded-pill px-3 fw-bold" onclick="go('makanan')">Semua</button>
-            </div>
-            <div class="row g-3" id="best-preview"></div>
-        </div>
-
-        <!-- Developer Team -->
-        <div class="sc text-center">
-            <h5 class="fw-800 mb-4">Tim Pengembang</h5>
-            <div class="row g-3 justify-content-center" id="team-list"></div>
-        </div>
+  <!-- HOME nya -->
+  <div id="p-home" class="page">
+    <div class="hero mb-4" style="background-image:url('HSekul.jpeg')">
+      <div class="hero-ov">
+        <h1 class="hero-title">KantinGo</h1>
+        <p class="hero-sub">Kantin SMKN 5 Surakarta</p>
+      </div>
     </div>
 
-    <!-- MAKANAN PAGE -->
-    <div id="p-makanan" class="page d-none">
-        <div class="d-flex justify-content-between align-items-end mb-3">
-            <div>
-                <h3 class="fw-900 mb-0">Makanan</h3>
-                <small id="count-makanan" class="text-muted"></small>
-            </div>
-            <div class="sub-tab">
-                <button class="active" onclick="filterMenu('makanan','all',this)">Semua</button>
-                <button onclick="filterMenu('makanan','best',this)">Populer</button>
-            </div>
-        </div>
-        <div class="sw mb-4">
-            <i class="bi bi-search position-absolute ms-3 mt-3 text-muted"></i>
-            <input type="text" id="search-makanan" placeholder="Cari menu favoritmu..." oninput="renderMenu('makanan')">
-        </div>
-        <div class="row g-3" id="l-makanan"></div>
+    <div class="row g-3 mb-4">
+      <div class="col-4"><div class="iic sc s1">
+        <div class="i-icon" style="background:#fff3f3"><i class="bi bi-geo-alt-fill text-danger fs-4"></i></div>
+        <div class="fw-700 text-center" style="font-size:.8rem;color:#555">Lt. Dasar</div>
+        <div class="text-center text-muted" style="font-size:.72rem">Gedung A</div>
+      </div></div>
+      <div class="col-4"><div class="iic sc s2">
+        <div class="i-icon" style="background:#fffbf0"><i class="bi bi-clock-fill text-warning fs-4"></i></div>
+        <div class="fw-700 text-center" style="font-size:.8rem;color:#555">07:00 – 17:00</div>
+        <span id="k-status" class="status-badge"></span>
+      </div></div>
+      <div class="col-4"><div class="iic sc s3">
+        <div class="i-icon" style="background:#f0f9ff"><i class="bi bi-tags-fill text-info fs-4"></i></div>
+        <div class="fw-700 text-center" style="font-size:.8rem;color:#555">Harga</div>
+        <div class="text-center text-muted" style="font-size:.72rem">Terjangkau</div>
+      </div></div>
     </div>
 
-    <!-- MINUMAN PAGE -->
-    <div id="p-minuman" class="page d-none">
-        <div class="d-flex justify-content-between align-items-end mb-3">
-            <div>
-                <h3 class="fw-900 mb-0">Minuman</h3>
-                <small id="count-minuman" class="text-muted"></small>
-            </div>
-            <div class="sub-tab">
-                <button class="active" onclick="filterMenu('minuman','all',this)">Semua</button>
-                <button onclick="filterMenu('minuman','best',this)">Dingin</button>
-            </div>
-        </div>
-        <div class="sw mb-4">
-            <i class="bi bi-search position-absolute ms-3 mt-3 text-muted"></i>
-            <input type="text" id="search-minuman" placeholder="Cari minuman segar..." oninput="renderMenu('minuman')">
-        </div>
-        <div class="row g-3" id="l-minuman"></div>
+    <div class="sc mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="fw-800 m-0" style="color:var(--ga)"><i class="bi bi-fire text-danger me-2"></i>Best Seller</h5>
+        <button class="btn btn-sm rounded-pill px-3 fw-700 text-white" style="background:var(--ga)" onclick="go('makanan')">Lihat Semua</button>
+      </div>
+      <div class="row g-3" id="best-preview"><div class="col-12"><div class="skeleton sk-card"></div></div></div>
     </div>
+
+    <div class="sc">
+      <h5 class="fw-800 mb-4 text-center" style="color:var(--ga)"><i class="bi bi-people-fill me-2"></i>Tim Pengembang</h5>
+      <div class="row g-3 justify-content-center" id="team-list"></div>
+      <div class="text-center mt-4">
+        <a href="rating.html" class="btn-rl">
+          <span class="btn-ri"><span class="brs">⭐⭐⭐</span><span>Beri Rating & Masukan</span><i class="bi bi-arrow-right-circle-fill bri"></i></span>
+          <span class="brg"></span>
+        </a>
+        <p class="text-muted mt-2" style="font-size:.75rem">Ceritain pengalaman kamu di KantinGo 💬</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAKANAN iki -->
+  <div id="p-makanan" class="page d-none">
+    <div class="hero mb-4" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200')">
+      <div class="hero-ov"><h2 class="fw-800" style="font-size:2rem;font-family:'Pacifico',cursive">Menu Makanan</h2></div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+      <span id="count-makanan" class="text-muted fw-600" style="font-size:.82rem"></span>
+      <div class="sub-tab">
+        <button class="active" onclick="filterMenu('makanan','all',this)">Semua</button>
+        <button onclick="filterMenu('makanan','best',this)"><i class="bi bi-fire text-danger"></i> Best</button>
+      </div>
+    </div>
+    <div class="sw mb-4"><i class="bi bi-search"></i><input type="text" id="search-makanan" placeholder="Cari makanan..." oninput="renderMenu('makanan')"></div>
+    <div class="row g-3" id="l-makanan"><div class="col-12"><div class="skeleton sk-card"></div></div><div class="col-12"><div class="skeleton sk-card"></div></div></div>
+  </div>
+
+  <!-- bagian MINUMAN -->
+  <div id="p-minuman" class="page d-none">
+    <div class="hero mb-4" style="background-image:url('https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1200')">
+      <div class="hero-ov"><h2 class="fw-800" style="font-size:2rem;font-family:'Pacifico',cursive">Menu Minuman</h2></div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+      <span id="count-minuman" class="text-muted fw-600" style="font-size:.82rem"></span>
+      <div class="sub-tab">
+        <button class="active" onclick="filterMenu('minuman','all',this)">Semua</button>
+        <button onclick="filterMenu('minuman','best',this)"><i class="bi bi-fire text-danger"></i> Best</button>
+      </div>
+    </div>
+    <div class="sw mb-4"><i class="bi bi-search"></i><input type="text" id="search-minuman" placeholder="Cari minuman..." oninput="renderMenu('minuman')"></div>
+    <div class="row g-3" id="l-minuman"><div class="col-12"><div class="skeleton sk-card"></div></div><div class="col-12"><div class="skeleton sk-card"></div></div></div>
+  </div>
 
 </div>
 
-<!-- Mobile Nav -->
-<nav class="bot-nav fixed-bottom d-md-none shadow-lg">
-    <div class="container d-flex justify-content-around">
-        <a class="text-center nib active" data-target="home" onclick="go('home')"><i class="bi bi-house-door"></i>Home</a>
-        <a class="text-center nib" data-target="makanan" onclick="go('makanan')"><i class="bi bi-egg-fried"></i>Makan</a>
-        <a class="text-center nib" data-target="minuman" onclick="go('minuman')"><i class="bi bi-cup-straw"></i>Minum</a>
-        <a class="text-center nib position-relative" data-bs-toggle="modal" data-bs-target="#cartModal">
-            <i class="bi bi-cart3"></i>Cart
-            <span id="c-mob" class="position-absolute top-0 start-50 badge rounded-pill bg-danger" style="font-size:10px">0</span>
-        </a>
-    </div>
+<!-- Nav bawah (mobile) -->
+<nav class="bot-nav fixed-bottom d-flex justify-content-around py-2 shadow-lg d-md-none" style="z-index:1040">
+  <div class="text-center nib w-100 active" data-target="home" onclick="go('home')"><i class="bi bi-house-door-fill"></i><span>Home</span></div>
+  <div class="text-center nib w-100" data-target="makanan" onclick="go('makanan')"><i class="bi bi-egg-fried"></i><span>Makanan</span></div>
+  <div class="text-center nib w-100" data-target="minuman" onclick="go('minuman')"><i class="bi bi-cup-straw"></i><span>Minuman</span></div>
 </nav>
 
-<!-- FAB Cart (Hanya muncul jika ada isi - opsional) -->
-<button class="btn btn-success d-md-none position-fixed shadow-lg" id="fab-cart" 
-        style="bottom: 85px; right: 20px; display: none;" data-bs-toggle="modal" data-bs-target="#cartModal">
-    <i class="bi bi-bag-check"></i>
+<!-- FAB keranjang (mobile) -->
+<button class="d-md-none btn text-white rounded-circle shadow-lg d-flex align-items-center justify-content-center position-fixed"
+  id="fab-cart" data-bs-toggle="modal" data-bs-target="#cartModal" style="background:var(--ga);bottom:86px;right:18px">
+  <i class="bi bi-cart3"></i>
+  <span id="c-mob" class="position-absolute badge rounded-pill bg-warning text-dark" style="top:4px;right:4px;font-size:9px;min-width:18px;padding:2px 5px;">0</span>
 </button>
 
-<!-- Modal Cart -->
+<!-- modal keranjuang -->
 <div class="modal fade" id="cartModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4">
-            <div class="modal-header border-0 px-4 pt-4">
-                <h5 class="fw-800 mb-0">Keranjang Kamu</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body px-4" id="c-items"></div>
-            <div class="modal-footer border-0 p-4 d-none" id="c-footer">
-                <div class="w-100 d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted fw-bold">Total Bayar:</span>
-                    <h4 class="fw-900 text-success mb-0" id="c-total">Rp 0</h4>
-                </div>
-                <button class="btn btn-success w-100 py-3 rounded-4 fw-bold" onclick="checkout()">Pesan Sekarang</button>
-            </div>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      <div class="modal-header border-0 pb-1 pt-4 px-4">
+        <div><h5 class="modal-title fw-800 mb-0">🛒 Keranjang Pesanan</h5><small class="text-muted fw-600">SMKN 5 Surakarta</small></div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body px-4 py-3" id="c-items"></div>
+      <div class="modal-footer border-0 flex-column align-items-stretch px-4 pb-4 d-none" id="c-footer">
+        <div class="d-flex justify-content-between fw-800 fs-5 mb-3 px-1">
+          <span>Total:</span><span style="color:var(--ga)" id="c-total">Rp 0</span>
         </div>
+        <button class="btn btn-lg rounded-pill fw-700 text-white shadow-sm py-3" style="background:var(--ga)" onclick="checkout()">
+          <i class="bi bi-bag-check-fill me-2"></i>Pesan Sekarang
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const $ = id => document.getElementById(id);
-const $$ = s => document.querySelectorAll(s);
-
-const MENU = {
-    makanan: [
-        {id:1, nama:"Ayam Geprek", harga:7000, desc:"Ayam crispy + sambal bawang", img:"mk1.jpg", kategori:"Lauk", best:true},
-        {id:2, nama:"Nasi Goreng", harga:5000, desc:"Nasi goreng telur spesial", img:"mk2.jpg", kategori:"Nasi", best:true},
-        {id:3, nama:"Mie Gacoan", harga:5000, desc:"Mie pedas topping pangsit", img:"mk3.jpg", kategori:"Mie", best:false},
-        {id:4, nama:"Mini Kebab", harga:3000, desc:"Daging sapi & sayur segar", img:"mk6.jpg", kategori:"Snack", best:false},
-        {id:5, nama:"Makaroni Pedas", harga:3000, desc:"Level 0 sampai 10", img:"mk8.jpg", kategori:"Snack", best:false}
-    ],
-    minuman: [
-        {id:101, nama:"Es Teh Manis", harga:3000, desc:"Segar dan manis pas", img:"mn1.jpg", kategori:"Dingin", best:true},
-        {id:102, nama:"Aqua Viva", harga:2500, desc:"Air mineral 600ml", img:"mn2.jpg", kategori:"Botol", best:false}
-    ]
+const $=id=>document.getElementById(id), $$=s=>document.querySelectorAll(s);
+const C="#21a72a";
+const EM={Lauk:"🍗",Nasi:"🍚",Mie:"🍜",Dessert:"🍦",Snack:"🌯",Dingin:"🧊",Botol:"💧",Umum:"🍽️"};
+const DEFAULT_MENU={
+  makanan:[
+    {id:1,nama:"Ayam Geprek",harga:7000,desc:"Ayam goreng crispy disiram sambal geprek pedas",img:"mk1.jpg",kategori:"Lauk",best:true},
+    {id:2,nama:"Nasi Goreng",harga:5000,desc:"Nasi goreng bumbu spesial + telur + kecap",img:"mk2.jpg",kategori:"Nasi",best:true},
+    {id:3,nama:"Mie Gacoan",harga:5000,desc:"Mie pedas level 2, topping bakso + sawi",img:"mk3.jpg",kategori:"Mie",best:false},
+    {id:4,nama:"Es Krim Joyday Blueberry",harga:3000,desc:"Es krim lembut rasa blueberry segar",img:"mk4.jpg",kategori:"Dessert",best:false},
+    {id:5,nama:"Es Krim Joyday Es Susu",harga:3000,desc:"Es krim creamy rasa susu original",img:"mk5.jpg",kategori:"Dessert",best:false},
+    {id:6,nama:"Mini Kebab",harga:3000,desc:"Kebab isi daging sapi, sayur, saus mayo",img:"mk6.jpg",kategori:"Snack",best:false},
+    {id:6,nama:"Makaroni",harga:3000,desc:"Makaroni Pedas Lvl 1,2,3",img:"mk8.jpg",kategori:"Nasi",best:false}
+  ],
+  minuman:[
+    {id:101,nama:"Es Teh",harga:3000,desc:"Teh manis dingin segar, pilihan klasik",img:"mn1.jpg",kategori:"Dingin",best:false},
+    {id:102,nama:"Air Mineral",harga:2500,desc:"Air mineral kemasan botol 600ml",img:"mn2.jpg",kategori:"Botol",best:false}
+  ]
 };
 
-let cart = [];
-let filter = { makanan: 'all', minuman: 'all' };
+let mf={makanan:"all",minuman:"all"}, cart=[];
 
-// Navigasi
-const go = id => {
-    $$('.page').forEach(p => p.classList.add('d-none'));
-    $(`p-${id}`).classList.remove('d-none');
-    $$('.nav-lc, .nib').forEach(n => n.classList.remove('active'));
-    $$(`[data-target="${id}"]`).forEach(n => n.classList.add('active'));
-    window.scrollTo(0,0);
+const getMenu=()=>{
+  const ex=JSON.parse(localStorage.getItem("kg_extra_menu")||'{"makanan":[],"minuman":[]}');
+  return{makanan:[...DEFAULT_MENU.makanan,...(ex.makanan||[])],minuman:[...DEFAULT_MENU.minuman,...(ex.minuman||[])]};
+};
+let menuData=getMenu();
+
+// Helpers
+const rp=n=>`Rp ${Number(n).toLocaleString("id-ID")}`;
+const em=k=>EM[k]||"🍽️";
+const imgFb=(src,k,w,h,r="14px")=>`
+  <img src="${src}" style="width:${w}px;height:${h}px;object-fit:cover;border-radius:${r};display:block;background:#e8f5e9"
+    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+  <div style="width:${w}px;height:${h}px;border-radius:${r};background:linear-gradient(135deg,#e8f5e9,#c8e6c9);display:none;align-items:center;justify-content:center;font-size:${Math.round(w*.4)}px;flex-shrink:0">${em(k)}</div>`;
+
+const go=id=>{
+  $$(".page").forEach(e=>e.classList.add("d-none"));
+  $(`p-${id}`).classList.remove("d-none");
+  $$(".nib,.nav-lc").forEach(e=>e.classList.remove("active"));
+  $$(`[data-target="${id}"]`).forEach(e=>e.classList.add("active"));
+  scrollTo({top:0,behavior:"smooth"});
 };
 
-// Format Rupiah
-const rp = n => "Rp " + n.toLocaleString('id-ID');
+const filterMenu=(t,m,btn)=>{
+  mf[t]=m;
+  $$(`#p-${t} .sub-tab button`).forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderMenu(t);
+};
 
-// Render Menu
-const renderMenu = t => {
-    const query = $(`search-${t}`).value.toLowerCase();
-    const items = MENU[t].filter(i => {
-        const matchSearch = i.nama.toLowerCase().includes(query);
-        const matchFilter = filter[t] === 'best' ? i.best : true;
-        return matchSearch && matchFilter;
+const renderMenu=t=>{
+  const q=($(`search-${t}`)?.value||"").toLowerCase();
+  const items=(menuData[t]||[]).filter(i=>(mf[t]==="best"?i.best:true)&&(!q||i.nama.toLowerCase().includes(q)||i.desc.toLowerCase().includes(q)));
+  const cel=$(`count-${t}`); if(cel)cel.textContent=`${items.length} menu tersedia`;
+  $(`l-${t}`).innerHTML=items.length?items.map((i,idx)=>`
+    <div class="col-12 col-md-6 col-lg-4 s${Math.min(idx+1,6)}">
+      <div class="card menu-card shadow-sm h-100 position-relative">
+        ${i.best?`<span class="ribbon">🔥 BEST</span>`:''}
+        <div class="card-body d-flex align-items-center gap-3 p-3">
+          <div style="position:relative;flex-shrink:0">${imgFb(i.img,i.kategori,88,88)}</div>
+          <div class="flex-grow-1 min-w-0">
+            <div class="mb-1"><span class="badge bg-light text-secondary border" style="font-size:.6rem">${i.kategori||'-'}</span></div>
+            <h6 class="mb-1 fw-800" style="font-size:.9rem">${i.nama}</h6>
+            <small class="text-muted d-block mb-2" style="font-size:.75rem;line-height:1.4">${i.desc}</small>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-800" style="color:${C};font-size:.9rem">${rp(i.harga)}</span>
+              <button class="add-btn" onclick="addCart(${i.id})"><i class="bi bi-plus-lg" style="font-size:.9rem"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`).join('')
+    :`<div class="empty-menu col-12"><i class="bi bi-search"></i><p class="fw-700">Tidak ada menu ditemukan</p></div>`;
+};
+
+const renderBestPreview=()=>{
+  const all=[...(menuData.makanan||[]),...(menuData.minuman||[])].filter(i=>i.best).slice(0,4);
+  $("best-preview").innerHTML=all.length?all.map((i,idx)=>`
+    <div class="col-12 col-md-6 s${idx+1}">
+      <div class="best-card card shadow-sm d-flex flex-row align-items-center gap-3 p-3">
+        <div style="position:relative;flex-shrink:0">${imgFb(i.img,i.kategori,60,60,"10px")}</div>
+        <div class="flex-grow-1 min-w-0">
+          <h6 class="mb-0 fw-800 text-truncate" style="font-size:.88rem">${i.nama}</h6>
+          <small class="text-muted" style="font-size:.72rem">${i.desc}</small><br>
+          <span class="fw-800" style="color:${C};font-size:.85rem">${rp(i.harga)}</span>
+        </div>
+        <button class="add-btn flex-shrink-0" onclick="addCart(${i.id})"><i class="bi bi-plus-lg" style="font-size:.9rem"></i></button>
+      </div>
+    </div>`).join('')
+    :`<div class="col-12 text-center text-muted py-3" style="font-size:.85rem">Belum ada menu best seller</div>`;
+};
+
+// Cart nya
+const allItems=()=>[...(menuData.makanan||[]),...(menuData.minuman||[])];
+
+const addCart=id=>{
+  const item=allItems().find(i=>i.id===id); if(!item)return;
+  const ext=cart.find(i=>i.id===id);
+  ext?ext.qty++:cart.push({...item,qty:1,note:""});
+  updCart();
+  Swal.mixin({toast:true,position:"top",showConfirmButton:false,timer:1400}).fire({icon:"success",title:`${item.nama} ditambah 🎉`});
+};
+
+const modQty=(id,d)=>{const idx=cart.findIndex(i=>i.id===id);if(idx>-1&&(cart[idx].qty+=d)<=0)cart.splice(idx,1);updCart();};
+const updNote=(id,val)=>{const i=cart.find(x=>x.id===id);if(i)i.note=val;};
+
+const updCart=()=>{
+  const totQ=cart.reduce((s,i)=>s+i.qty,0), totP=cart.reduce((s,i)=>s+i.harga*i.qty,0);
+  $("c-desk").innerText=$("c-mob").innerText=totQ;
+  $("c-total").innerText=rp(totP);
+  $("fab-cart").classList.toggle("has-item",totQ>0);
+  if(!cart.length){
+    $("c-items").innerHTML=`<div class="text-center text-muted py-5"><div style="font-size:4rem;opacity:.15">🛒</div><p class="mt-2 fw-700">Keranjang masih kosong</p></div>`;
+    $("c-footer").classList.add("d-none");
+  }else{
+    $("c-footer").classList.remove("d-none");
+    $("c-items").innerHTML=cart.map(i=>`
+      <div class="cir mb-2">
+        <div class="d-flex align-items-center gap-3">
+          <div style="position:relative;flex-shrink:0">${imgFb(i.img||'',i.kategori,50,50,"10px")}</div>
+          <div class="flex-grow-1"><h6 class="mb-0 fw-800" style="font-size:.88rem">${i.nama}</h6><small class="fw-700" style="color:${C}">${rp(i.harga)}</small></div>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0">
+            <div class="qty-btn" onclick="modQty(${i.id},-1)">−</div>
+            <span class="fw-800 px-1">${i.qty}</span>
+            <div class="qty-btn" onclick="modQty(${i.id},1)" style="border-color:var(--g);color:var(--g)">+</div>
+          </div>
+        </div>
+        <input type="text" class="form-control form-control-sm mt-2 rounded-3" placeholder="Catatan (opsional)..." value="${i.note}"
+          oninput="updNote(${i.id},this.value)" style="font-size:.8rem;border:1.5px solid #e0e0e0;font-family:inherit">
+      </div>`).join('');
+  }
+};
+
+// Checkout
+const checkout=()=>{
+  bootstrap.Modal.getInstance($("cartModal")).hide();
+  Swal.fire({
+    title:"Metode Pembayaran",
+    html:`<button class="btn btn-outline-primary w-100 mb-2 py-3 fw-700 rounded-pill" onclick="qris()"><i class="bi bi-qr-code-scan me-2 fs-5"></i>Bayar via QRIS</button>
+         <button class="btn btn-outline-success w-100 py-3 fw-700 rounded-pill" onclick="sukses('Tunai')"><i class="bi bi-cash-coin me-2 fs-5"></i>Tunai di Kasir</button>`,
+    showConfirmButton:false,showCancelButton:true,cancelButtonText:"Batal",customClass:{popup:"rounded-4"}
+  });
+};
+
+const qris=()=>{
+  const pr=cart.reduce((s,i)=>s+i.harga*i.qty,0);
+  Swal.fire({
+    title:"Scan QRIS",
+    html:`<p class="text-muted small">Scan via E-Wallet / M-Banking</p>
+         <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KantinGo:Rp${pr}" class="border rounded-3 p-1 mb-3" width="200">
+         <h5 class="fw-800" style="color:var(--ga)">${rp(pr)}</h5>`,
+    showCancelButton:true,confirmButtonText:"✅ Sudah Bayar",confirmButtonColor:"#21a72a",customClass:{popup:"rounded-4"}
+  }).then(r=>r.isConfirmed&&sukses("QRIS"));
+};
+
+const sukses=m=>{
+  Swal.fire({title:"Memproses...",timer:1500,didOpen:()=>Swal.showLoading(),showConfirmButton:false})
+    .then(()=>{
+      Swal.fire({icon:"success",title:"Berhasil! 🎉",text:m==="QRIS"?"Pembayaran QRIS berhasil!":"Silakan bayar di kasir ya!",confirmButtonColor:"#21a72a",customClass:{popup:"rounded-4"}});
+      cart=[];updCart();
     });
-
-    $(`count-${t}`).innerText = `${items.length} menu ditemukan`;
-    $(`l-${t}`).innerHTML = items.map(i => `
-        <div class="col-12 col-md-6">
-            <div class="card menu-card shadow-sm p-3">
-                <div class="d-flex align-items-center gap-3">
-                    <img src="${i.img}" class="menu-card-img" onerror="this.src='https://placehold.co/100x100?text=Food'">
-                    <div class="flex-grow-1">
-                        <h6 class="fw-bold mb-1">${i.nama}</h6>
-                        <p class="text-muted small mb-2">${i.desc}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fw-900 text-success">${rp(i.harga)}</span>
-                            <button class="add-btn" onclick="addToCart(${i.id}, '${t}')"><i class="bi bi-plus"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `).join('');
 };
 
-const filterMenu = (t, val, btn) => {
-    filter[t] = val;
-    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderMenu(t);
+// Status kantin
+const cekKantin=()=>{
+  const jam=new Date().getHours(),buka=jam>=7&&jam<17,el=$("k-status");
+  el.innerText=buka?"BUKA":"TUTUP";
+  el.className=`status-badge ${buka?"bg-success text-white":"bg-danger text-white"}`;
 };
 
-// Cart Logic
-const addToCart = (id, type) => {
-    const item = MENU[type].find(i => i.id === id);
-    const existing = cart.find(c => c.id === id);
-    if(existing) existing.qty++;
-    else cart.push({...item, qty: 1});
-    updateCartUI();
-    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Ditambahkan!', showConfirmButton: false, timer: 1500 });
-};
+// Tim
+const team=[
+  {n:"Andika",r:"Lead Developer",img:"P3.jpg",color:"#4a90e2"},
+  {n:"Faathir",r:"UI Designer",img:"P2.jpg",color:"#21a72a"},
+  {n:"Lingga",r:"Inovator",img:"P1.png",color:"#f59e0b"}
+];
+$("team-list").innerHTML=team.map((t,i)=>`
+  <div class="col-4 s${i+1}">
+    <div class="team-card sc p-3 text-center">
+      <img src="${t.img}" class="team-av mb-2" width="70" height="70" style="border-color:${t.color}!important"
+        onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(t.n)}&background=${t.color.replace('#','')}&color=fff&size=70'">
+      <h6 class="fw-800 mb-0" style="font-size:.85rem">${t.n}</h6>
+      <small class="text-muted" style="font-size:.72rem">${t.r}</small>
+    </div>
+  </div>`).join('');
 
-const updateCartUI = () => {
-    const totalQty = cart.reduce((a, b) => a + b.qty, 0);
-    const totalPrice = cart.reduce((a, b) => a + (b.harga * b.qty), 0);
-    
-    $('c-desk').innerText = $('c-mob').innerText = totalQty;
-    $('c-total').innerText = rp(totalPrice);
-    $('fab-cart').style.display = totalQty > 0 ? 'block' : 'none';
+// Particles
+function createParticles(){
+  const bg=$("particles-bg");
+  for(let i=0;i<18;i++){
+    const p=document.createElement("div"); p.className="particle";
+    const s=Math.random()*16+6;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+10}s;animation-delay:${Math.random()*10}s`;
+    bg.appendChild(p);
+  }
+}
 
-    if(cart.length === 0) {
-        $('c-items').innerHTML = `<div class="text-center py-5 text-muted"><i class="bi bi-cart-x fs-1"></i><p>Keranjang kosong</p></div>`;
-        $('c-footer').classList.add('d-none');
-    } else {
-        $('c-footer').classList.remove('d-none');
-        $('c-items').innerHTML = cart.map(c => `
-            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
-                <div class="flex-grow-1">
-                    <h6 class="fw-bold mb-0">${c.nama}</h6>
-                    <small class="text-success fw-bold">${rp(c.harga)}</small>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-sm btn-light rounded-circle" onclick="changeQty(${c.id}, -1)">-</button>
-                    <span class="fw-bold">${c.qty}</span>
-                    <button class="btn btn-sm btn-light rounded-circle" onclick="changeQty(${c.id}, 1)">+</button>
-                </div>
-            </div>
-        `).join('');
-    }
-};
+function loadMenu(){menuData=getMenu();renderMenu("makanan");renderMenu("minuman");renderBestPreview();}
+window.addEventListener("storage",e=>{if(e.key==="kg_extra_menu")loadMenu();});
 
-const changeQty = (id, delta) => {
-    const item = cart.find(c => c.id === id);
-    item.qty += delta;
-    if(item.qty <= 0) cart = cart.filter(c => c.id !== id);
-    updateCartUI();
-};
-
-const checkout = () => {
-    Swal.fire({
-        title: 'Konfirmasi Pesanan',
-        text: "Pesanan akan diteruskan ke kasir.",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#21a72a',
-        confirmButtonText: 'Ya, Pesan!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            Swal.fire('Berhasil!', 'Silakan menuju kasir untuk pembayaran.', 'success');
-            cart = [];
-            updateCartUI();
-            bootstrap.Modal.getInstance($('cartModal')).hide();
-        }
-    });
-};
-
-// Team & Misc
-const renderHome = () => {
-    const best = [...MENU.makanan, ...MENU.minuman].filter(i => i.best).slice(0,4);
-    $('best-preview').innerHTML = best.map(i => `
-        <div class="col-6 col-md-3">
-            <div class="best-card shadow-sm p-2 text-center h-100">
-                <img src="${i.img}" class="img-fluid rounded-3 mb-2" style="height:100px; object-fit:cover" onerror="this.src='https://placehold.co/100x100'">
-                <h6 class="small fw-bold mb-1 text-truncate">${i.nama}</h6>
-                <p class="text-success fw-900 small mb-0">${rp(i.harga)}</p>
-            </div>
-        </div>
-    `).join('');
-
-    const team = [
-        {n:"Andika", r:"Lead", c:"#4a90e2"},
-        {n:"Faathir", r:"UI/UX", c:"#21a72a"},
-        {n:"Lingga", r:"Dev", c:"#f59e0b"}
-    ];
-    $('team-list').innerHTML = team.map(t => `
-        <div class="col-4">
-            <div class="p-2">
-                <div class="mx-auto mb-2" style="width:50px; height:50px; background:${t.c}; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold">${t.n[0]}</div>
-                <h6 class="small fw-bold mb-0">${t.n}</h6>
-                <small class="text-muted" style="font-size:10px">${t.r}</small>
-            </div>
-        </div>
-    `).join('');
-};
-
-const cekKantin = () => {
-    const jam = new Date().getHours();
-    const buka = jam >= 7 && jam < 17;
-    const el = $('k-status');
-    el.innerText = buka ? "Buka Sekarang" : "Sudah Tutup";
-    el.className = `status-badge ${buka ? 'bg-success text-white' : 'bg-danger text-white'}`;
-};
-
-// Init
-window.onload = () => {
-    renderHome();
-    renderMenu('makanan');
-    renderMenu('minuman');
-    cekKantin();
-};
+createParticles();cekKantin();setInterval(cekKantin,60000);loadMenu();
 </script>
 </body>
 </html>
+
