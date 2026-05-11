@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KantinGo – Rating</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green: #21a72a;
+      --green-dark: #0d7a13;
+      --gold: #f59e0b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #e8f5e9 0%, #f0fdf4 40%, #dcfce7 70%, #bbf7d0 100%);
+      position: relative;
+    }
+
+    #bgCanvas {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+
+    .flower {
+      position: fixed; pointer-events: none; z-index: 0; user-select: none;
+      animation: floatFlower linear infinite; opacity: 0;
+    }
+    @keyframes floatFlower {
+      0%   { transform: translateY(110vh) rotate(0deg) scale(0.5); opacity: 0; }
+      8%   { opacity: .7; }
+      92%  { opacity: .5; }
+      100% { transform: translateY(-15vh) rotate(360deg) scale(1.1); opacity: 0; }
+    }
+
+    .page-wrap {
+      position: relative; z-index: 1; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 30px 16px 60px;
+    }
+
+    .rating-card {
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(20px);
+      border-radius: 32px;
+      box-shadow: 0 8px 48px rgba(33,167,42,.14), 0 2px 0 rgba(255,255,255,.9) inset;
+      width: 100%; max-width: 460px; overflow: hidden;
+      animation: cardDrop .7s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes cardDrop {
+      from { opacity: 0; transform: translateY(-40px) scale(.92); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .card-header-band {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      padding: 28px 32px 22px; text-align: center; position: relative; overflow: hidden;
+    }
+    .card-header-band::before {
+      content: ''; position: absolute; top: -30px; right: -30px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(255,255,255,.08);
+    }
+    .brand-badge {
+      font-family: 'Pacifico', cursive; color: #fff; font-size: 1.9rem;
+      text-shadow: 0 3px 14px rgba(0,0,0,.2);
+      animation: logoIn .6s ease .1s both;
+    }
+    @keyframes logoIn {
+      from { opacity: 0; transform: scale(.8) translateY(-10px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .header-sub {
+      color: rgba(255,255,255,.85); font-size: .8rem;
+      letter-spacing: 2px; text-transform: uppercase; margin-top: 4px;
+      animation: fadeUp .5s ease .3s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .emoji-mascot {
+      font-size: 2.8rem; display: block; margin: 8px 0 0;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50%      { transform: translateY(-8px) rotate(5deg); }
+    }
+
+    .card-body-pad { padding: 28px 28px 32px; }
+
+    .field-label {
+      font-weight: 800; font-size: .82rem; color: #444;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+
+    .field-input {
+      width: 100%; border: 2px solid #d1fae5; border-radius: 14px;
+      padding: 11px 16px; font-family: inherit; font-size: .88rem;
+      font-weight: 600; color: #333; outline: none;
+      transition: border .2s, box-shadow .2s, transform .15s; background: #fff;
+    }
+    .field-input:focus {
+      border-color: var(--green); box-shadow: 0 0 0 4px rgba(33,167,42,.1);
+      transform: scale(1.01);
+    }
+    textarea.field-input { resize: none; min-height: 90px; }
+
+    .star-row {
+      display: flex; gap: 6px; justify-content: center; margin: 6px 0 4px;
+    }
+    .star-btn {
+      background: none; border: none; cursor: pointer; font-size: 2.2rem;
+      transition: transform .18s, filter .18s;
+      filter: grayscale(1) opacity(.35); padding: 2px; line-height: 1;
+    }
+    .star-btn.lit {
+      filter: none; animation: starPop .25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .star-btn:hover { transform: scale(1.25) rotate(-8deg); }
+    @keyframes starPop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.4) rotate(15deg); }
+      100% { transform: scale(1); }
+    }
+    .star-label {
+      text-align: center; font-size: .8rem; font-weight: 800; color: var(--green);
+      min-height: 20px; transition: all .2s; margin-top: 4px;
+    }
+
+    .fancy-divider {
+      display: flex; align-items: center; gap: 10px; margin: 20px 0;
+    }
+    .fancy-divider hr { flex: 1; border: 0; border-top: 1.5px dashed #d1fae5; }
+    .fancy-divider span { font-size: 1.1rem; }
+
+    .submit-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px 24px; border: none; border-radius: 50px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      color: #fff; font-family: inherit; font-weight: 800; font-size: 1rem;
+      cursor: pointer; box-shadow: 0 6px 24px rgba(33,167,42,.3);
+      transition: transform .2s, box-shadow .2s; position: relative; overflow: hidden;
+    }
+    .submit-btn::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.18) 0%, transparent 60%);
+    }
+    .submit-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 36px rgba(33,167,42,.4); }
+    .submit-btn:active { transform: scale(.97); }
+    .submit-btn .btn-icon {
+      font-size: 1.2rem; animation: btnIconSpin 2s linear infinite;
+    }
+    @keyframes btnIconSpin {
+      0%,100% { transform: rotate(0deg) scale(1); }
+      50%      { transform: rotate(20deg) scale(1.2); }
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--green-dark); font-weight: 800; font-size: .82rem;
+      text-decoration: none; padding: 7px 16px; border-radius: 30px;
+      border: 2px solid #d1fae5; background: rgba(255,255,255,.7);
+      backdrop-filter: blur(10px); margin-bottom: 16px; transition: all .2s;
+    }
+    .back-link:hover {
+      background: var(--green); color: #fff; border-color: var(--green);
+      transform: translateX(-4px);
+    }
+
+    .reviews-title {
+      font-weight: 800; font-size: .88rem; color: #555;
+      display: flex; align-items: center; gap: 6px; margin-bottom: 12px;
+    }
+
+    .review-card {
+      background: rgba(255,255,255,.75); border: 1.5px solid #d1fae5;
+      border-radius: 18px; padding: 14px 16px; margin-bottom: 10px;
+      animation: slideInCard .35s ease both; backdrop-filter: blur(8px);
+    }
+    @keyframes slideInCard {
+      from { opacity: 0; transform: translateY(14px) scale(.97); }
+      to   { opacity: 1; transform: none; }
+    }
+    .review-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 800; font-size: .9rem; flex-shrink: 0;
+    }
+    .review-name { font-weight: 800; font-size: .85rem; color: #333; }
+    .review-stars { font-size: .8rem; letter-spacing: 1px; }
+    .review-msg { font-size: .78rem; color: #666; margin-top: 4px; line-height: 1.5; }
+    .review-time { font-size: .68rem; color: #aaa; font-weight: 600; }
+
+    #toastArea {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; pointer-events: none;
+    }
+    .toast-pill {
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      color: #fff; border-radius: 50px; padding: 12px 24px;
+      font-family: inherit; font-weight: 800; font-size: .88rem;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 32px rgba(33,167,42,.35);
+      animation: toastIn .4s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-20px) scale(.85); }
+      to   { opacity: 1; transform: none; }
+    }
+    .toast-pill.out { animation: toastOut .35s ease forwards; }
+    @keyframes toastOut { to { opacity: 0; transform: translateY(-12px) scale(.9); } }
+
+    .confetti-piece {
+      position: fixed; pointer-events: none; z-index: 9998;
+      width: 10px; height: 10px; border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    .rating-summary {
+      background: rgba(255,255,255,.6); border-radius: 18px; padding: 16px;
+      border: 1.5px solid #d1fae5; margin-bottom: 20px;
+    }
+    .rating-big {
+      font-family: 'Pacifico', cursive; font-size: 3rem; color: var(--green); line-height: 1;
+    }
+    .bar-track {
+      background: #e8f5e9; border-radius: 30px; height: 8px; overflow: hidden; flex: 1;
+    }
+    .bar-fill {
+      height: 100%; background: linear-gradient(90deg, var(--green), #6ee97c);
+      border-radius: 30px; transition: width .8s cubic-bezier(.25,.46,.45,.94); width: 0;
+    }
+    .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .bar-label { font-size: .7rem; font-weight: 800; color: #777; width: 14px; text-align: right; }
+    .bar-count { font-size: .68rem; font-weight: 700; color: #aaa; width: 20px; }
+
+    @keyframes shake {
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)}
+      40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)}
+    }
+
+    @media (max-width: 480px) {
+      .card-body-pad { padding: 20px 18px 24px; }
+      .brand-badge { font-size: 1.55rem; }
+      .star-btn { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<div id="flowersContainer"></div>
+<div id="toastArea"></div>
+
+<div class="page-wrap">
+  <div style="width:100%;max-width:460px">
+    <a href="index.html" class="back-link">
+      <i class="bi bi-arrow-left-circle-fill"></i> Kembali ke KantinGo
+    </a>
+
+    <div class="rating-card">
+      <div class="card-header-band">
+        <div class="brand-badge"><i class="bi bi-shop-window me-1"></i>KantinGo</div>
+        <div class="header-sub">Kantin SMKN 5 Surakarta</div>
+        <span class="emoji-mascot">🌟</span>
+      </div>
+
+      <div class="card-body-pad">
+
+        <!-- Summary -->
+        <div class="rating-summary" id="ratingSummary" style="display:none">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div>
+              <div class="rating-big" id="avgScore">—</div>
+              <div style="font-size:.7rem;color:#888;font-weight:700">Rata-rata</div>
+            </div>
+            <div style="flex:1" id="barRows"></div>
+          </div>
+        </div>
+
+        <!-- Nama -->
+        <div class="mb-3">
+          <label class="field-label"><i class="bi bi-person-circle" style="color:var(--green)"></i> Nama Kamu</label>
+          <input type="text" id="nama" class="field-input" placeholder="Contoh: Budi 😊" autocomplete="off"/>
+        </div>
+
+        <!-- Stars -->
+        <div class="mb-3">
+          <label class="field-label"><i class="bi bi-star-fill" style="color:var(--gold)"></i> Bintang</label>
+          <div class="star-row" id="starRow">
+            <button class="star-btn" data-val="1" type="button">⭐</button>
+            <button class="star-btn" data-val="2" type="button">⭐</button>
+            <button class="star-btn" data-val="3" type="button">⭐</button>
+            <button class="star-btn" data-val="4" type="button">⭐</button>
+            <button class="star-btn" data-val="5" type="button">⭐</button>
+          </div>
+          <div class="star-label" id="starLabel">Ketuk bintang untuk memberi nilai ✨</div>
+        </div>
+
+        <!-- Pesan -->
+        <div class="mb-4">
+          <label class="field-label"><i class="bi bi-chat-heart-fill" style="color:#f87171"></i> Pesan</label>
+          <textarea id="pesan" class="field-input" placeholder="Ceritain pengalaman kamu di kantin... 🍜"></textarea>
+        </div>
+
+        <button class="submit-btn" type="button" onclick="submitRating()">
+          <span class="btn-icon">🚀</span>
+          <span>Kirim Rating Sekarang!</span>
+        </button>
+
+        <div class="fancy-divider"><hr/><span>💬</span><hr/></div>
+
+        <div>
+          <div class="reviews-title">
+            <i class="bi bi-chat-quote-fill" style="color:var(--green)"></i>
+            Ulasan Terbaru
+          </div>
+          <div id="reviewsList">
+            <div style="text-align:center;color:#aaa;font-size:.8rem;padding:20px">
+              Belum ada ulasan. Jadilah yang pertama! 🎉
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const STAR_LABELS = {
+  1: "😢 Perlu banyak perbaikan",
+  2: "😕 Kembangkan terus ya!",
+  3: "😊 Lumayan, terus maju!",
+  4: "😄 Enak banget sih!",
+  5: "🤩 Sempurna! Terenak!"
+};
+let selectedStar = 0;
+
+// Star interaction
+document.querySelectorAll('.star-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedStar = parseInt(btn.dataset.val);
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.classList.toggle('lit', i < selectedStar);
+      b.style.filter = '';
+    });
+    document.getElementById('starLabel').textContent = STAR_LABELS[selectedStar];
+  });
+  btn.addEventListener('mouseenter', () => {
+    const hv = parseInt(btn.dataset.val);
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.style.filter = i < hv ? 'none' : 'grayscale(1) opacity(.35)';
+    });
+  });
+  btn.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.style.filter = i < selectedStar ? 'none' : 'grayscale(1) opacity(.35)';
+    });
+  });
+});
+
+// Storage
+const KEY = 'kantingo_ratings_v2';
+const getReviews = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return []; } };
+const saveReviews = r => localStorage.setItem(KEY, JSON.stringify(r));
+
+const timeAgo = ts => {
+  const d = Math.floor((Date.now() - ts) / 1000);
+  if (d < 60) return 'Baru saja';
+  if (d < 3600) return Math.floor(d/60) + ' menit lalu';
+  if (d < 86400) return Math.floor(d/3600) + ' jam lalu';
+  return Math.floor(d/86400) + ' hari lalu';
+};
+
+const escHtml = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+const renderReviews = () => {
+  const reviews = getReviews();
+  const listEl = document.getElementById('reviewsList');
+  const summEl = document.getElementById('ratingSummary');
+
+  if (!reviews.length) {
+    listEl.innerHTML = '<div style="text-align:center;color:#aaa;font-size:.8rem;padding:20px">Belum ada ulasan. Jadilah yang pertama! 🎉</div>';
+    summEl.style.display = 'none';
+    return;
+  }
+
+  summEl.style.display = 'block';
+  const avg = (reviews.reduce((s,r) => s + r.bintang, 0) / reviews.length).toFixed(1);
+  document.getElementById('avgScore').textContent = avg;
+
+  const counts = [0,0,0,0,0];
+  reviews.forEach(r => counts[r.bintang - 1]++);
+  const mx = Math.max(...counts, 1);
+  document.getElementById('barRows').innerHTML = [5,4,3,2,1].map(n => `
+    <div class="bar-row">
+      <span class="bar-label">${n}</span>
+      <div class="bar-track"><div class="bar-fill" data-pct="${counts[n-1]/mx*100}"></div></div>
+      <span class="bar-count">${counts[n-1]}</span>
+    </div>`).join('');
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.dataset.pct + '%'; });
+  });
+
+  listEl.innerHTML = reviews.slice().reverse().slice(0, 10).map((r, idx) => `
+    <div class="review-card" style="animation-delay:${idx*.07}s">
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <div class="review-avatar">${r.nama.charAt(0).toUpperCase()}</div>
+        <div class="flex-grow-1">
+          <div class="review-name">${escHtml(r.nama)}</div>
+          <div class="review-stars">${'⭐'.repeat(r.bintang)}${'☆'.repeat(5-r.bintang)}</div>
+        </div>
+        <div class="review-time">${timeAgo(r.ts)}</div>
+      </div>
+      ${r.pesan ? '<div class="review-msg">💬 ' + escHtml(r.pesan) + '</div>' : ''}
+    </div>`).join('');
+};
+
+function submitRating() {
+  const nama = document.getElementById('nama').value.trim();
+  const pesan = document.getElementById('pesan').value.trim();
+  if (!nama) { document.getElementById('nama').style.animation='shake .4s ease'; setTimeout(()=>document.getElementById('nama').style.animation='',400); showToast('⚠️ Isi nama kamu dulu ya!', true); return; }
+  if (!selectedStar) { showToast('⭐ Pilih bintang dulu!', true); return; }
+
+  const r = getReviews();
+  r.push({ nama, bintang: selectedStar, pesan, ts: Date.now() });
+  saveReviews(r);
+
+  confettiBurst();
+  showToast('🎉 Makasih ' + nama + '! Rating kamu masuk!');
+
+  document.getElementById('nama').value = '';
+  document.getElementById('pesan').value = '';
+  selectedStar = 0;
+  document.querySelectorAll('.star-btn').forEach(b => { b.classList.remove('lit'); b.style.filter = ''; });
+  document.getElementById('starLabel').textContent = 'Ketuk bintang untuk memberi nilai ✨';
+  renderReviews();
+}
+
+function showToast(msg, isWarn = false) {
+  const area = document.getElementById('toastArea');
+  const pill = document.createElement('div');
+  pill.className = 'toast-pill';
+  if (isWarn) pill.style.background = 'linear-gradient(135deg,#f59e0b,#d97706)';
+  pill.innerHTML = msg;
+  area.appendChild(pill);
+  setTimeout(() => { pill.classList.add('out'); setTimeout(() => pill.remove(), 350); }, 2800);
+}
+
+function confettiBurst() {
+  const colors = ['#21a72a','#6ee97c','#f59e0b','#f87171','#60a5fa','#a78bfa','#fb7185'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = 'left:'+Math.random()*100+'vw;top:0;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(Math.random()*10+6)+'px;height:'+(Math.random()*10+6)+'px;border-radius:'+(Math.random()>.5?'50%':'2px')+';animation-duration:'+(Math.random()*1.5+1.2)+'s;animation-delay:'+(Math.random()*.4)+'s;';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2500);
+  }
+}
+
+// Bubble Canvas
+(function() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const bubbles = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (let i = 0; i < 24; i++) {
+    bubbles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight + window.innerHeight,
+      r: Math.random() * 38 + 10,
+      speed: Math.random() * 0.6 + 0.3,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: Math.random() * 0.02 + 0.01,
+      opacity: Math.random() * 0.35 + 0.1
+    });
+  }
+  function drawBubble(b) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    const g = ctx.createRadialGradient(b.x-b.r*.3, b.y-b.r*.3, b.r*.1, b.x, b.y, b.r);
+    g.addColorStop(0, 'rgba(255,255,255,'+(b.opacity*1.6)+')');
+    g.addColorStop(.4, 'rgba(187,247,208,'+b.opacity+')');
+    g.addColorStop(1, 'rgba(33,167,42,'+(b.opacity*.4)+')');
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(33,167,42,'+(b.opacity*.5)+')';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(b.x-b.r*.28, b.y-b.r*.28, b.r*.2, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,255,255,'+(b.opacity*1.2)+')';
+    ctx.fill();
+    ctx.restore();
+  }
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    bubbles.forEach(b => {
+      b.y -= b.speed;
+      b.wobble += b.wobbleSpeed;
+      b.x += Math.sin(b.wobble) * 0.5;
+      if (b.y + b.r < 0) { b.y = H + b.r; b.x = Math.random() * W; }
+      drawBubble(b);
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// Floating Flowers
+(function() {
+  const container = document.getElementById('flowersContainer');
+  const flowers = ['🌸','🌺','🌼','🌻','🌹','🌷','💐','🍀','🌿','🌱','✿'];
+  for (let i = 0; i < 16; i++) {
+    const el = document.createElement('div');
+    el.className = 'flower';
+    el.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+    el.style.cssText = 'left:'+Math.random()*100+'%;font-size:'+(Math.random()*1.4+1)+'rem;animation-duration:'+(Math.random()*14+12)+'s;animation-delay:'+(Math.random()*12)+'s;';
+    container.appendChild(el);
+  }
+})();
+
+renderReviews();
+</script>
+</body>
+</html>
